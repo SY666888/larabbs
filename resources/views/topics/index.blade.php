@@ -24,4 +24,4 @@
       @include('topics._sidebar')
     </div>
   </div>
-  @endsectio
+  @endsection
