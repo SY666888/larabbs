@@ -6,39 +6,47 @@ use App\Models\Topic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
+use App\Models\Category;
+use Auth;
 
 class TopicsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
-    }
+	public function __construct()
+	{
+		$this->middleware('auth', ['except' => ['index', 'show']]);
+	}
 
 	public function index(Request $request, Topic $topic)
 	{
-	    $topics = $topic->withOrder($request->order)->paginate(20);
+		$topics = $topic->withOrder($request->order)->paginate(20);
 		return view('topics.index', compact('topics'));
 	}
 
-    public function show(Topic $topic)
-    {
-        return view('topics.show', compact('topic'));
-    }
+	public function show(Topic $topic)
+	{
+		return view('topics.show', compact('topic'));
+	}
 
 	public function create(Topic $topic)
 	{
-		return view('topics.create_and_edit', compact('topic'));
+
+		$categories = Category::all();
+		return view('topics.create_and_edit', compact('topic', 'categories'));
 	}
 
-	public function store(TopicRequest $request)
+	public function store(TopicRequest $request, Topic $topic)
 	{
-		$topic = Topic::create($request->all());
-		return redirect()->route('topics.show', $topic->id)->with('message', 'Created successfully.');
+		$topic->fill($request->all());
+		#fill 方法会将传参的键值数组填充到模型的属性中，如以上数组， $topic->title 的值为 标题 
+		$topic->user_id = Auth::id();
+		$topic->save();
+		#$topic = Topic::create($request->all());
+		return redirect()->route('topics.show', $topic->id)->with('message', '帖子创建成功！');
 	}
 
 	public function edit(Topic $topic)
 	{
-        $this->authorize('update', $topic);
+		$this->authorize('update', $topic);
 		return view('topics.create_and_edit', compact('topic'));
 	}
 

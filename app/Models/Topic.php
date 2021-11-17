@@ -4,7 +4,7 @@ namespace App\Models;
 
 class Topic extends Model
 {
-    protected $fillable = ['title', 'body', 'user_id', 'category_id', 'reply_count', 'view_count', 'last_reply_user_id', 'order', 'excerpt', 'slug'];
+    protected $fillable = ['title', 'body',  'category_id', 'excerpt', 'slug'];
 
     public function category()
     {
@@ -14,7 +14,7 @@ class Topic extends Model
     {
         return $this->belongsTo(User::class);
     }
-/*这里我们使用了 Laravel 。本地作用域允许我们定义通用的约束集合以便在应用中复用。要定义这样的一个作
+    /*这里我们使用了 Laravel 。本地作用域允许我们定义通用的约束集合以便在应用中复用。要定义这样的一个作
 用域，只需简单在对应 Eloquent 模型方法前加上一个 scope 前缀，作用域总是返回 。一旦定义了作用域，则
 可以在查询模型时调用作用域方法。在进行方法调用时不需要加上 scope 前缀。如以上代码中的 recent() 和
 recentReplied()*/
@@ -43,6 +43,4 @@ recentReplied()*/
         // 按照创建时间排序
         return $query->orderBy('created_at', 'desc');
     }
-
-
 }
