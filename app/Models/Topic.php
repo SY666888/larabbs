@@ -43,4 +43,11 @@ recentReplied()*/
         // 按照创建时间排序
         return $query->orderBy('created_at', 'desc');
     }
+
+    public function link($params = [])
+    {
+        return route('topics.show', array_merge([$this->id, $this->slug], $params));
+        //把两个数组合并为一个数组：array_merge,参数 $params 允许附加 URL 参数的设定。
+    }
+
 }
