@@ -56,4 +56,10 @@ recentReplied()*/
         //把两个数组合并为一个数组：array_merge,参数 $params 允许附加 URL 参数的设定。
     }
 
+    public function updateReplyCount()
+    {
+        $this->reply_count = $this->replies->count();
+        $this->save();
+    }
+
 }
