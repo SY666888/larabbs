@@ -38,6 +38,9 @@ HttpException。 authorize 方法接收两个参数，第一个为授权策略�
     {
         $this->registerPolicies();
 
-        //
+        \Horizon::auth(function ($request) {
+            // 是否是站长
+            return \Auth::user()->hasRole('Founder');
+        });
     }
 }
